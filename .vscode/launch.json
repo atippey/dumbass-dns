@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "env": {
+                "DOMAIN": "craptastic.turd.ninja",
+                "ZONE_ID": "Z110WD4WEN5LAL",
+                "TTL": "300",
+                "TIMEOUT": "30"
+            }
+        },
+        {
+            "name": "Python: Refresh Module",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "dumbass_dns.refresh",
+            "cwd": "${workspaceFolder}/src",
+            "console": "integratedTerminal",
+            "env": {
+                "DOMAIN": "craptastic.turd.ninja",
+                "ZONE_ID": "Z110WD4WEN5LAL",
+                "TTL": "300",
+                "TIMEOUT": "30"
+            }
+        }
+    ]
+}
