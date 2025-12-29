@@ -1,0 +1,27 @@
+Thank you for installing {{ .Chart.Name }}!
+
+Your Route53 Dynamic DNS updater has been deployed as a CronJob.
+
+Configuration:
+- Domain: {{ .Values.dns.domain }}
+- Zone ID: {{ .Values.dns.zoneId }}
+- Schedule: {{ .Values.cronjob.schedule }}
+- TTL: {{ .Values.dns.ttl }} seconds
+
+{{- if .Values.aws.useIRSA }}
+- AWS Authentication: Using IRSA (IAM Roles for Service Accounts)
+{{- else }}
+- AWS Authentication: Using secret "{{ .Values.aws.credentialsSecret }}"
+{{- end }}
+
+To view the CronJob:
+  kubectl get cronjob {{ include "dumbass-dns.fullname" . }} -n {{ .Release.Namespace }}
+
+To view recent jobs:
+  kubectl get jobs -n {{ .Release.Namespace }} -l app.kubernetes.io/instance={{ .Release.Name }}
+
+To view logs from the most recent job:
+  kubectl logs -n {{ .Release.Namespace }} -l app.kubernetes.io/instance={{ .Release.Name }} --tail=50
+
+To manually trigger a job run:
+  kubectl create job --from=cronjob/{{ include "dumbass-dns.fullname" . }} {{ include "dumbass-dns.fullname" . }}-manual-$(date +%s) -n {{ .Release.Namespace }}

@@ -1,0 +1,102 @@
+# Default values for dumbass-dns.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# CronJob configuration
+cronjob:
+  # Schedule in cron format (default: every 5 minutes)
+  schedule: "*/5 * * * *"
+  # Number of successful jobs to keep
+  successfulJobsHistoryLimit: 3
+  # Number of failed jobs to keep
+  failedJobsHistoryLimit: 1
+  # Concurrency policy: Allow, Forbid, or Replace
+  concurrencyPolicy: Forbid
+  # Restart policy for the pod
+  restartPolicy: OnFailure
+
+# Container image configuration
+image:
+  repository: ghcr.io/atippey/dumbass-dns/refresh
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# Image pull secrets for private registries
+imagePullSecrets: []
+# Example:
+# - name: ghcr-secret
+
+# DNS configuration - REQUIRED
+dns:
+  # The domain name to update (e.g., "home.example.com")
+  domain: ""
+  # The Route53 hosted zone ID
+  zoneId: ""
+  # TTL for the DNS record in seconds
+  ttl: "300"
+  # Timeout for HTTP requests in seconds
+  timeout: "30"
+
+# AWS credentials configuration
+aws:
+  # Set to true to use IAM Roles for Service Accounts (IRSA)
+  # This is the recommended approach for EKS clusters
+  useIRSA: false
+  # Name of the secret containing AWS credentials (if not using IRSA)
+  # The secret should have keys: aws_access_key_id and aws_secret_access_key
+  credentialsSecret: "aws-credentials"
+  # AWS region (optional, can also be set via IRSA)
+  region: ""
+
+# Service account configuration
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account (e.g., for IRSA)
+  annotations: {}
+  # Example for IRSA:
+  # eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# Pod annotations
+podAnnotations: {}
+
+# Pod labels
+podLabels: {}
+
+# Pod security context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+# Container security context
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+    - ALL
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 200m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 64Mi
+
+# Node selector
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity rules
+affinity: {}
