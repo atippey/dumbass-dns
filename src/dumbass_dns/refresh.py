@@ -5,6 +5,7 @@ from os import getenv
 import boto3
 import requests
 
+IP_CHECK = getenv("IP_CHECK", "https://api.ipify.org")
 DOMAIN = getenv("DOMAIN")
 ZONE_ID = getenv("ZONE_ID")
 TTL = int(getenv("TTL", "300"))
@@ -14,7 +15,7 @@ TIMEOUT = int(getenv("TIMEOUT", "30"))
 def main() -> None:
     """Update target zone id for current ip"""
     # Get current public IP
-    current_ip = requests.get("https://api.ipify.org", timeout=TIMEOUT).text
+    current_ip = requests.get(IP_CHECK, timeout=TIMEOUT).text
 
     # Get DNS IP
     client = boto3.client("route53")
