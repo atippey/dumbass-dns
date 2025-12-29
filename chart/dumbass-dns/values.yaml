@@ -17,7 +17,7 @@ cronjob:
 
 # Container image configuration
 image:
-  repository: your-registry/dumbass-dns
+  repository: ghcr.io/atippey/dumbass-dns/refresh
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -25,7 +25,7 @@ image:
 # Image pull secrets for private registries
 imagePullSecrets: []
 # Example:
-# - name: regcred
+# - name: ghcr-secret
 
 # DNS configuration - REQUIRED
 dns:
