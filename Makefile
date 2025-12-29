@@ -49,3 +49,11 @@ aws-secret:
 		}" > $$TMP; \
 		kubectl apply -f $$TMP ; \
 		rm $$TMP
+
+.PHONY: install
+install:
+	@helm upgrade --install dns chart/dumbass-dns -f ./values.yaml
+
+.PHONY: run
+run:
+	@kubectl create job --from=cronjob/dns-dumbass-dns dns-dumbass-dns-manual-$$(date +%s) -n default
